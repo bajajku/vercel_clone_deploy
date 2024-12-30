@@ -1,6 +1,7 @@
 import {createClient, commandOptions} from 'redis';
 import { getConstantValue } from 'typescript';
 import { downloadS3Folder } from './aws';
+import { buildProject } from './utils';
 
 const subscriber = createClient();
 subscriber.connect(); // will connect to local redis
@@ -23,6 +24,7 @@ async function main() {
         console.log(response);
 
         await downloadS3Folder(`output/${id}`);
+        await buildProject(id);
     }
 }
 main();

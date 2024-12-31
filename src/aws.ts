@@ -44,7 +44,7 @@ export async function downloadS3Folder(prefix: string) {
 }
 
 // Uploads the final dist folder to the s3 bucket
-export function copyFinalDist(id: string) {
+export async function copyFinalDist(id: string) {
 const folderPath = path.join(__dirname, `output/${id}/dist`);
 const allFiles = getAllFiles(folderPath);
 allFiles.forEach(file => {

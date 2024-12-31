@@ -6,6 +6,8 @@ import { buildProject } from './utils';
 const subscriber = createClient();
 subscriber.connect(); // will connect to local redis
 
+const publisher = createClient();
+publisher.connect();
 
 async function main() {
 
@@ -25,7 +27,9 @@ async function main() {
 
         await downloadS3Folder(`output/${id}`);
         await buildProject(id);
-        await copyFinalDist(id);
+        copyFinalDist(id);
+
+        publisher.hSet("status", id, "deployed");
     }
 }
 main();

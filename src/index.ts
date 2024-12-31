@@ -14,7 +14,7 @@ async function main() {
 
         const response = await subscriber.brPop(
             commandOptions({isolated: true}),
-            "deployments",
+            "uploads",
             0
         );
         if(response === null){

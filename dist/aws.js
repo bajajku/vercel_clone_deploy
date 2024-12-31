@@ -55,7 +55,7 @@ dotenv.config();
 const s3 = new aws_sdk_1.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    endpoint: process.env.S3_ENDPOINT,
+    region: process.env.AWS_REGION
 });
 // prefix = output/asd123
 function downloadS3Folder(prefix) {

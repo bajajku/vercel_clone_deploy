@@ -1,6 +1,6 @@
 import {createClient, commandOptions} from 'redis';
 import { getConstantValue } from 'typescript';
-import { downloadS3Folder } from './aws';
+import { copyFinalDist, downloadS3Folder } from './aws';
 import { buildProject } from './utils';
 
 const subscriber = createClient();
@@ -25,6 +25,7 @@ async function main() {
 
         await downloadS3Folder(`output/${id}`);
         await buildProject(id);
+        await copyFinalDist(id);
     }
 }
 main();

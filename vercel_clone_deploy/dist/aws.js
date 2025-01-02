@@ -62,10 +62,10 @@ function downloadS3Folder(prefix) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         const allFiles = yield s3.listObjectsV2({
-            Bucket: "vercel",
-            Prefix: prefix
+            Bucket: 'vercel-clone-kunal',
+            Prefix: prefix,
         }).promise();
-        // 
+        console.log(allFiles.Contents);
         const allPromises = ((_a = allFiles.Contents) === null || _a === void 0 ? void 0 : _a.map((_a) => __awaiter(this, [_a], void 0, function* ({ Key }) {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 if (!Key) {
@@ -79,9 +79,10 @@ function downloadS3Folder(prefix) {
                     fs_1.default.mkdirSync(dirName, { recursive: true });
                 }
                 s3.getObject({
-                    Bucket: "vercel",
+                    Bucket: 'vercel-clone-kunal',
                     Key
                 }).createReadStream().pipe(outputFile).on("finish", () => {
+                    console.log(outputFile.path);
                     resolve("");
                 });
             }));
@@ -92,7 +93,7 @@ function downloadS3Folder(prefix) {
 }
 // Uploads the final dist folder to the s3 bucket
 function copyFinalDist(id) {
-    const folderPath = path_1.default.join(__dirname, `output/${id}/dist`);
+    const folderPath = path_1.default.join(__dirname, `output`, `${id}`, `build`);
     const allFiles = getAllFiles(folderPath);
     allFiles.forEach(file => {
         uploadFile(`dist/${id}/` + file.slice(folderPath.length + 1), file);
@@ -118,8 +119,8 @@ const uploadFile = (fileName, localFilePath) => __awaiter(void 0, void 0, void 0
     const fileContent = fs_1.default.readFileSync(localFilePath);
     const response = yield s3.upload({
         Body: fileContent,
-        Bucket: "vercel",
-        Key: fileName,
+        Bucket: 'vercel-clone-kunal',
+        Key: fileName.replace(/\\/g, "/"),
     }).promise();
     console.log(response);
 });
